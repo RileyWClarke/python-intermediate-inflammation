@@ -1,3 +1,4 @@
+...
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -16,3 +17,4 @@
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+...

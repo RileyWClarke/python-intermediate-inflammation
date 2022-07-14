@@ -3,7 +3,7 @@
 
 import argparse
 
-from inflammation import models, views
+from inflammation import models, serializers, views
 
 
 def main(args):
@@ -18,8 +18,9 @@ def main(args):
         infiles = [args.infiles]
 
     for filename in infiles:
-        inflammation_data = models.load_csv(filename)
 
+        inflammation_data = models.load_csv(filename)
+        
         view_data = {
             'average': models.daily_mean(inflammation_data), 
             'max': models.daily_max(inflammation_data), 
@@ -27,15 +28,26 @@ def main(args):
 
         views.visualize(view_data)
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='A basic patient inflammation data management system')
 
     parser.add_argument(
         'infiles',
-        nargs='+',
+        type=bool,
         help='Input CSV(s) containing inflammation series for each patient')
+
+    parser.add_argument(
+        '--view',
+        default='visualize',
+        choices=['visualize', 'record'],
+        help='Which view should be used?')
+
+    parser.add_argument(
+        '--patient',
+        type=int,
+        default=0,
+        help='Which patient should be displayed?')
 
     args = parser.parse_args()
 

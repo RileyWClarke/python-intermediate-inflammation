@@ -2,6 +2,7 @@
 
 from matplotlib import pyplot as plt
 import numpy as np
+from inflammation.serializers import PatientJSONSerializer
 
 
 def visualize(data_dict):
@@ -23,3 +24,18 @@ def visualize(data_dict):
     fig.tight_layout()
 
     plt.show()
+
+def display_patient_record(patient):
+    """Display data for a single patient."""
+    print(patient.name)
+    for obs in patient.observations:
+        print(obs.day, obs.value)
+
+def display_patient_JSON(filename, patnum):
+    """Display JSON data for a single patient."""
+
+    file = PatientJSONSerializer.load(filename)
+    patient = file[patnum]
+    print('Patient: ' + patient.name)
+    for obs in patient.observations:
+        print('Day: {0}, Value: {1}'.format(obs.day, obs.value))
